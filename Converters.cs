@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace CardFilePBX
+namespace PrintShop
 {
 	public class DbStateToBoolean : IValueConverter
 	{

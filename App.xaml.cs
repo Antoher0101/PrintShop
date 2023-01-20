@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace CardFilePBX
+namespace PrintShop
 {
 	public partial class App : Application
 	{

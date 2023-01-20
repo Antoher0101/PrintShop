@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 
-namespace CardFilePBX
+namespace PrintShop
 {
 	public partial class AbonentInfo : Window
 	{

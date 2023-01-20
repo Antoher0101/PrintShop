@@ -1,7 +1,7 @@
-﻿<Application x:Class="CardFilePBX.App"
+﻿<Application x:Class="PrintShop.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CardFilePBX"
+             xmlns:local="clr-namespace:PrintShop"
              StartupUri="MainWindow.xaml">
 	<Application.Resources>
 		<!-- TabItem styling -->

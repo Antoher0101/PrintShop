@@ -4,14 +4,14 @@ using Newtonsoft.Json.Converters;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace CardFilePBX
+namespace PrintShop
 {
 	public class CardFileSettings : INotifyPropertyChanged
 	{
 		private LastFile _lastFile;
 		private Tariffs _tariffs;
 		private Date _date;
-		public static CardFileSettings FromJson(string json) => JsonConvert.DeserializeObject<CardFileSettings>(json, CardFilePBX.Converter.Settings);
+		public static CardFileSettings FromJson(string json) => JsonConvert.DeserializeObject<CardFileSettings>(json, PrintShop.Converter.Settings);
 
 		[JsonProperty("lastFile")]
 		public LastFile LastFile
@@ -98,7 +98,7 @@ namespace CardFilePBX
 	}
 	public static class Serialize
 	{
-		public static string ToJson(this CardFileSettings self) => JsonConvert.SerializeObject(self, CardFilePBX.Converter.Settings);
+		public static string ToJson(this CardFileSettings self) => JsonConvert.SerializeObject(self, PrintShop.Converter.Settings);
 	}
 
 	internal static class Converter

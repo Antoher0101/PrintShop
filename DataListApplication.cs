@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 
-namespace CardFilePBX
+namespace PrintShop
 {
 	class DataListApplication : INotifyPropertyChanged
 	{

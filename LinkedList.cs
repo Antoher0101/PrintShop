@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CardFilePBX
+namespace PrintShop
 {
 	public class Cell<T>
 	{
