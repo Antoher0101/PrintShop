@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CardFilePBX
+namespace PrintShop
 {
 	public class Abonent
 	{

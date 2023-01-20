@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardFilePBX", "CardFilePBX.csproj", "{9B0F0A5A-0537-4298-A9B0-A8C9621F245A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintShop", "PrintShop.csproj", "{9B0F0A5A-0537-4298-A9B0-A8C9621F245A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

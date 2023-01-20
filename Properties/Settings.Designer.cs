@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CardFilePBX.Properties {
+namespace PrintShop.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
