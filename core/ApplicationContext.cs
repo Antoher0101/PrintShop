@@ -1,20 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
+using PrintShop.models;
 
 namespace PrintShop.core
 {
-    public class ApplicationContext : DbContext
+    public partial class ApplicationContext : DbContext
     {
-        public string connectionString;
-        public ApplicationContext(string connectionString)
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<DiscountInfo> Discounts { get; set; }
+
+        public ApplicationContext()
         {
-            this.connectionString = connectionString;
             Database.EnsureCreated();
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlite(connectionString);
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite("Data Source=./db/db.db;Cache=Shared");
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
