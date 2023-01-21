@@ -16,10 +16,6 @@ namespace PrintShop.models
         public int Count { get; set; }
 
         [Required]
-        [ForeignKey("idEmployee")]
-        public Employee Employee { get; set; }
-
-        [Required]
         [ForeignKey("idTotalService")]
         public TotalService TotalService { get; set; }
 

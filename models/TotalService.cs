@@ -20,6 +20,10 @@ namespace PrintShop.models
         public Client Client { get; set; }
 
         [Required]
+        [ForeignKey("idEmployee")]
+        public Employee Employee { get; set; }
+
+        [Required]
         [ForeignKey("idDiscount")]
         public Discount Discount { get; set; }
 

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows.Documents;
 
 namespace PrintShop.models
 {
@@ -23,6 +25,9 @@ namespace PrintShop.models
 
         [Required]
         public string Phone { get; set; }
+
+        [ForeignKey("idDiscount")]
+        public List<Discount> Discount { get; set; }
 
         public override string ToString()
         {
