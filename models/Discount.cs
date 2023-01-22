@@ -1,25 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using PrintShop.models.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PrintShop.models
 {
-    [Table("Discout")]
-    [Comment("Информация о скидке, предоставляемой клиенту")]
-    public class Discount
+    [Table("Discount")]
+    public class Discount : Entity
     {
-        [Required]
-        [ForeignKey("idClient")]
-        public Client Client { get; set; }
+        public int IdClient { get; set; }
 
-        [Required]
-        [ForeignKey("idDiscount")]
-        public DiscountInfo DiscountInfo { get; set; }
+        [ForeignKey("IdClient")]
+        public virtual Client Client { get; set; }
+        
+        public int IdDiscount { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Client}\t({DiscountInfo})";
-        }
+        [ForeignKey("IdDiscount")]
+        public virtual DiscountInfo DiscountInfo { get; set; }
     }
 }

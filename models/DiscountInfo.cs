@@ -1,26 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using PrintShop.models.Base;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PrintShop.models
 {
     [Table("DiscountInfo")]
-    [Comment("Информация о существующих скидках")]
-    public class DiscountInfo
+    public class DiscountInfo : Entity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
-
-        [Required]
         public int Percent { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Name} - {Percent}%";
-        }
     }
 }

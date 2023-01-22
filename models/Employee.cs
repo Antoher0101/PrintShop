@@ -1,25 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PrintShop.models.Base;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows.Documents;
 
 namespace PrintShop.models
 {
     [Table("Employee")]
     [Comment("Информация о сотруднике PrintShop")]
-    public class Employee
+    public class Employee : Entity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
-
-        [Required]
         public string Name { get; set; }
 
-        [Required]
         public string LastName { get; set; }
 
-        [Required]
         public string MiddleName { get; set; }
+
+        [InverseProperty("Employee")]
+        public virtual List<TotalService> TotalServices { get; set; }
 
         public override string ToString()
         {

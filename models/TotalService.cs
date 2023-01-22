@@ -5,29 +5,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PrintShop.models.Base;
 
 namespace PrintShop.models
 {
     [Table("TotalService")]
-    public class TotalService
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+    public class TotalService : Entity
+    { 
+        [ForeignKey("IdClient")]
+        public virtual Client Client { get; set; }
 
-        [Required]
-        [ForeignKey("idClient")]
-        public Client Client { get; set; }
+        public int IdClient { get; set; }
 
-        [Required]
-        [ForeignKey("idEmployee")]
-        public Employee Employee { get; set; }
+        [ForeignKey("IdEmployee")]
+        public virtual Employee Employee { get; set; }
 
-        [Required]
-        [ForeignKey("idDiscount")]
-        public Discount Discount { get; set; }
+        public int IdEmployee { get; set; }
 
-        [Required]
         public string Date { get; set; }
+
+        [InverseProperty("TotalService")]
+        public virtual List<Service> Services { get; set; }
     }
 }
