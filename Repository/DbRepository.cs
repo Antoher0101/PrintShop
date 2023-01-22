@@ -2,6 +2,7 @@
 using PrintShop.core;
 using PrintShop.models.Base;
 using System;
+using System.Collections;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,10 +55,10 @@ namespace PrintShop.Repository
             return item;
         }
         public T Get(int id) => Items.SingleOrDefault(item => item.Id == id);
-        public int GetAll() {
-            return Items.Count();
+        public IEnumerable GetAll() {
+            return Items.AsEnumerable();
         }
-        
+
         public async Task<T> GetAsync(int id, CancellationToken Cancel = default) => await Items
             .SingleOrDefaultAsync(item => item.Id == id, Cancel)
             .ConfigureAwait(false);
