@@ -1,8 +1,11 @@
-﻿using PrintShop.core;
+﻿using Microsoft.EntityFrameworkCore;
+using PrintShop.core;
 using PrintShop.models;
 using PrintShop.Repository;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -154,7 +157,7 @@ namespace PrintShop
                     Date = DateTime.Now.ToShortDateString(),
                     Discount = DiscountAddBox.SelectedItem as Discount,
 
-                }) ;
+                });
 
                 serviceAddingWindow = new ServiceAdding(totalService, db);
                 serviceAddingWindow.Closed += new EventHandler(window_closing);
@@ -334,6 +337,28 @@ namespace PrintShop
                 ServiceInfoDataGrid.Visibility = Visibility.Collapsed;
                 ClientsDataGrid.Visibility = Visibility.Collapsed;
 
+            }
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            var totalServices = db.TotalServices.AsEnumerable();
+            TotalServices.Clear();
+            if (SearchNameBox.Text != "")
+            {
+                totalServices = totalServices.Where(s => s.Client.Name.Contains(SearchNameBox.Text));
+            }
+            if (SearchLastNameBox.Text != "")
+            {
+                totalServices = totalServices.Where(s => s.Client.LastName.Contains(SearchLastNameBox.Text));
+            }
+            if (SearchPhoneNumberBox.Text != "")
+            {
+                totalServices = totalServices.Where(s => s.Client.Phone.Contains(SearchPhoneNumberBox.Text));
+            }
+            foreach (var item in totalServices)
+            {
+                TotalServices.Add(item);
             }
         }
     }
