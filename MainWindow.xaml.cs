@@ -1,10 +1,8 @@
-﻿using ClosedXML.Excel;
-using PrintShop.core;
+﻿using PrintShop.core;
 using PrintShop.models;
 using PrintShop.Repository;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -19,6 +17,7 @@ namespace PrintShop
         public ObservableCollection<TotalService> TotalServices { get; set; } = new ObservableCollection<TotalService>();
         public ObservableCollection<DiscountInfo> DiscountInfos { get; set; } = new ObservableCollection<DiscountInfo>();
         public ObservableCollection<ServiceInfo> ServiceInfos { get; set; } = new ObservableCollection<ServiceInfo>();
+        public ObservableCollection<Discount> Discounts { get; set; } = new ObservableCollection<Discount>();
 
 
         DbRepository<Client> clientsRepository { get; set; }
@@ -47,7 +46,7 @@ namespace PrintShop
 
             ClientAddBox.ItemsSource = Clients;
             EmployeeAddBox.ItemsSource = Employees;
-            DiscountAddBox.ItemsSource = DiscountInfos;
+            DiscountAddBox.ItemsSource = Discounts;
         }
 
         private void window_closing(object sender, EventArgs e)
@@ -62,13 +61,8 @@ namespace PrintShop
 
         private void RefreshCollections()
         {
-            Clients.Clear();
             Employees.Clear();
             TotalServices.Clear();
-            foreach (Client item in clientsRepository.Items)
-            {
-                Clients.Add(item);
-            }
             foreach (Employee item in employeeRepository.Items)
             {
                 Employees.Add(item);
@@ -77,7 +71,27 @@ namespace PrintShop
             {
                 TotalServices.Add(item);
             }
+            RefreshDiscountInfos();
+            RefreshClientCollection();
             RefreshServiceInfoCollection();
+        }
+
+        private void RefreshDiscountInfos()
+        {
+            DiscountInfos.Clear();
+            foreach (DiscountInfo item in discountInfoRepository.Items)
+            {
+                DiscountInfos.Add(item);
+            }
+        }
+
+        private void RefreshClientCollection()
+        {
+            Clients.Clear();
+            foreach (Client item in clientsRepository.Items)
+            {
+                Clients.Add(item);
+            }
         }
 
         private void RefreshServiceInfoCollection()
@@ -93,6 +107,7 @@ namespace PrintShop
         {
             ServiceDataGrid.ItemsSource = TotalServices;
             ServiceInfoDataGrid.ItemsSource = ServiceInfos;
+            ClientsDataGrid.ItemsSource = Clients;
         }
 
         private void AddService(object sender, RoutedEventArgs e)
@@ -102,10 +117,12 @@ namespace PrintShop
 
             var clientBox = ClientAddBox.SelectedIndex;
             var employeeBox = EmployeeAddBox.SelectedIndex;
+            var discount = DiscountAddBox.SelectedIndex;
 
             // Восстановление стиля
             ClientAddBox.Style = (Style)Application.Current.Resources["ComboBox"];
             EmployeeAddBox.Style = (Style)Application.Current.Resources["ComboBox"];
+            DiscountAddBox.Style = (Style)Application.Current.Resources["ComboBox"];
 
             // Валидация ввода
 
@@ -119,6 +136,11 @@ namespace PrintShop
                 EmployeeAddBox.Style = (Style)Application.Current.Resources["RedComboBox"];
                 valid = false;
             }
+            if (discount < 0)
+            {
+                DiscountAddBox.Style = (Style)Application.Current.Resources["RedComboBox"];
+                valid = false;
+            }
 
             if (valid)
             {
@@ -130,13 +152,9 @@ namespace PrintShop
                     Client = client,
                     Employee = employee,
                     Date = DateTime.Now.ToShortDateString(),
-                    Discount = discountRepository.Add(new Discount()
-                    {
-                        Client = client,
-                        DiscountInfo = DiscountAddBox.SelectedItem as DiscountInfo
-                    })
+                    Discount = DiscountAddBox.SelectedItem as Discount,
 
-                });
+                }) ;
 
                 serviceAddingWindow = new ServiceAdding(totalService, db);
                 serviceAddingWindow.Closed += new EventHandler(window_closing);
@@ -183,7 +201,28 @@ namespace PrintShop
             }
             if (valid)
             {
+                Client client = new Client()
+                {
+                    Name = firstName,
+                    LastName = lastName,
+                    MiddleName = patronymic,
+                    Phone = phoneNumber,
+                };
+                if (clientsRepository.Add(client) != null)
+                {
+                    discountRepository.Add(new Discount()
+                    {
+                        IdClient = client.Id,
+                        IdDiscount = 1
+                    });
 
+                    RefreshClientCollection();
+                    RefreshDiscountInfos();
+                    NameAddBox.Text = string.Empty;
+                    LastNameAddBox.Text = string.Empty;
+                    MiddleNameAddBox.Text = string.Empty;
+                    PhoneNumberAddBox.Text = string.Empty;
+                }
             }
         }
 
@@ -250,19 +289,18 @@ namespace PrintShop
                     ServiceType.Text = string.Empty;
                     ServicePaper.Text = string.Empty;
                 }
-
             }
         }
 
         private void ClientAddBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DiscountInfos.Clear();
+            Discounts.Clear();
             if (ClientAddBox.SelectedItem != null)
             {
                 var client = ClientAddBox.SelectedItem as Client;
                 foreach (var item in client.Discounts)
                 {
-                    DiscountInfos.Add(item.DiscountInfo);
+                    Discounts.Add(item);
                 }
             }
         }
@@ -280,12 +318,22 @@ namespace PrintShop
             if (ServicesTab.IsSelected)
             {
                 ServiceDataGrid.Visibility = Visibility.Collapsed;
+                ClientsDataGrid.Visibility = Visibility.Collapsed;
                 ServiceInfoDataGrid.Visibility = Visibility.Visible;
+
+            }
+            else if (NewClientsTab.IsSelected)
+            {
+                ClientsDataGrid.Visibility = Visibility.Visible;
+                ServiceDataGrid.Visibility = Visibility.Collapsed;
+                ServiceInfoDataGrid.Visibility = Visibility.Collapsed;
             }
             else
             {
                 ServiceDataGrid.Visibility = Visibility.Visible;
                 ServiceInfoDataGrid.Visibility = Visibility.Collapsed;
+                ClientsDataGrid.Visibility = Visibility.Collapsed;
+
             }
         }
     }

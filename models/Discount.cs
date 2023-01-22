@@ -15,5 +15,7 @@ namespace PrintShop.models
 
         [ForeignKey("IdDiscount")]
         public virtual DiscountInfo DiscountInfo { get; set; }
+
+        public override string ToString() => $"{DiscountInfo}";
     }
 }
