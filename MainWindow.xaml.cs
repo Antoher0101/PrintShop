@@ -1,5 +1,7 @@
-﻿using PrintShop.core;
+﻿using Microsoft.EntityFrameworkCore;
+using PrintShop.core;
 using PrintShop.models;
+using PrintShop.Repository;
 using System;
 using System.Linq;
 using System.Windows;
@@ -11,10 +13,11 @@ namespace PrintShop
         public MainWindow()
         {
             InitializeComponent();
-            foreach (var item in db.Clients.AsEnumerable())
-            {
-                Console.WriteLine(item);
-            }
+            DbRepository<Client> clientsRepository = new DbRepository<Client>(db);
+            DbRepository<Discount> discountRepository = new DbRepository<Discount>(db);
+            DbRepository<DiscountInfo> discountInfoRepository = new DbRepository<DiscountInfo>(db);
+
+            Console.WriteLine(clientsRepository.GetAll());
         }
     }
 }
