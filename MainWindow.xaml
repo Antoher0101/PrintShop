@@ -19,24 +19,12 @@
               ScrollViewer.VerticalScrollBarVisibility="Disabled" 
               UseLayoutRounding="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
             <MenuItem Header="Файл" Width="40">
-                <MenuItem Header="Создать"/>
-                <MenuItem Header="Открыть"/>
-                <MenuItem Header="Сохранить"/>
-                <MenuItem Header="Проверить подключение"/>
                 <Separator />
                 <MenuItem Header="Выход" Click="ExitProgram"/>
             </MenuItem>
-            <MenuItem Header="Абоненты">
-                <MenuItem Header="Добавить"></MenuItem>
-                <MenuItem Header="Изменить"></MenuItem>
-                <MenuItem Header="Удалить"></MenuItem>
-                <Separator />
-                <MenuItem Header="Показать всю информацию"></MenuItem>
-            </MenuItem>
             <MenuItem Header="Таблица">
-                <MenuItem Header="Обновить"></MenuItem>
+                <MenuItem Header="Сформировать отчет" Click="GenerateReport"></MenuItem>
             </MenuItem>
-            <MenuItem Header="?"></MenuItem>
         </Menu>
         <Grid Grid.Column="1" Grid.Row="1" Margin="10 10 10 0">
             <Grid.RowDefinitions>

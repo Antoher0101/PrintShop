@@ -1,15 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ClosedXML.Excel;
 using PrintShop.core;
 using PrintShop.models;
 using PrintShop.Repository;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace PrintShop
 {
@@ -30,6 +27,7 @@ namespace PrintShop
         DbRepository<TotalService> totalServiceRepository { get; set; }
 
         Window serviceAddingWindow;
+        Window reportWindoow;
         public MainWindow()
         {
             clientsRepository = new DbRepository<Client>(db);
@@ -235,6 +233,14 @@ namespace PrintShop
                     DiscountInfos.Add(item.DiscountInfo);
                 }
             }
+        }
+
+        private void GenerateReport(object sender, RoutedEventArgs e)
+        {
+            reportWindoow = new ReportWindow(db);
+
+            reportWindoow.Owner = this;
+            reportWindoow.ShowDialog();
         }
     }
 }
