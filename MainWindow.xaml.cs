@@ -18,13 +18,15 @@ namespace PrintShop
         public ObservableCollection<Employee> Employees { get; set; } = new ObservableCollection<Employee>();
         public ObservableCollection<TotalService> TotalServices { get; set; } = new ObservableCollection<TotalService>();
         public ObservableCollection<DiscountInfo> DiscountInfos { get; set; } = new ObservableCollection<DiscountInfo>();
-        
+        public ObservableCollection<ServiceInfo> ServiceInfos { get; set; } = new ObservableCollection<ServiceInfo>();
+
 
         DbRepository<Client> clientsRepository { get; set; }
         DbRepository<Discount> discountRepository { get; set; }
         DbRepository<DiscountInfo> discountInfoRepository { get; set; }
         DbRepository<Employee> employeeRepository { get; set; }
         DbRepository<TotalService> totalServiceRepository { get; set; }
+        DbRepository<ServiceInfo> serviceInfoRepository { get; set; }
 
         Window serviceAddingWindow;
         Window reportWindoow;
@@ -35,6 +37,7 @@ namespace PrintShop
             discountInfoRepository = new DbRepository<DiscountInfo>(db);
             employeeRepository = new DbRepository<Employee>(db);
             totalServiceRepository = new DbRepository<TotalService>(db);
+            serviceInfoRepository = new DbRepository<ServiceInfo>(db);
             RefreshCollections();
 
             InitializeComponent();
@@ -74,11 +77,22 @@ namespace PrintShop
             {
                 TotalServices.Add(item);
             }
+            RefreshServiceInfoCollection();
+        }
+
+        private void RefreshServiceInfoCollection()
+        {
+            ServiceInfos.Clear();
+            foreach (ServiceInfo item in serviceInfoRepository.Items)
+            {
+                ServiceInfos.Add(item);
+            }
         }
 
         private void initDataGridView()
         {
             ServiceDataGrid.ItemsSource = TotalServices;
+            ServiceInfoDataGrid.ItemsSource = ServiceInfos;
         }
 
         private void AddService(object sender, RoutedEventArgs e)
@@ -94,7 +108,7 @@ namespace PrintShop
             EmployeeAddBox.Style = (Style)Application.Current.Resources["ComboBox"];
 
             // Валидация ввода
-       
+
             if (clientBox < 0)
             {
                 ClientAddBox.Style = (Style)Application.Current.Resources["RedComboBox"];
@@ -111,16 +125,17 @@ namespace PrintShop
                 Client client = ClientAddBox.SelectedItem as Client;
                 Employee employee = EmployeeAddBox.SelectedItem as Employee;
 
-                TotalService totalService = totalServiceRepository.Add(new TotalService() { 
-                    Client = client, 
+                TotalService totalService = totalServiceRepository.Add(new TotalService()
+                {
+                    Client = client,
                     Employee = employee,
                     Date = DateTime.Now.ToShortDateString(),
                     Discount = discountRepository.Add(new Discount()
                     {
-                        Client= client,
+                        Client = client,
                         DiscountInfo = DiscountAddBox.SelectedItem as DiscountInfo
                     })
-                    
+
                 });
 
                 serviceAddingWindow = new ServiceAdding(totalService, db);
@@ -168,7 +183,7 @@ namespace PrintShop
             }
             if (valid)
             {
-                
+
             }
         }
 
@@ -218,6 +233,23 @@ namespace PrintShop
             }
             if (valid)
             {
+                ServiceInfo serviceinfo = new ServiceInfo()
+                {
+                    Name = name,
+                    Price = double.Parse(price),
+                    Format = format,
+                    Type = type,
+                    Paper = paper,
+                };
+                if (serviceInfoRepository.Add(serviceinfo) != null)
+                {
+                    RefreshServiceInfoCollection();
+                    ServiceName.Text = string.Empty;
+                    ServicePrice.Text = string.Empty;
+                    ServiceFormat.Text = string.Empty;
+                    ServiceType.Text = string.Empty;
+                    ServicePaper.Text = string.Empty;
+                }
 
             }
         }
@@ -225,7 +257,7 @@ namespace PrintShop
         private void ClientAddBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DiscountInfos.Clear();
-            if (ClientAddBox.SelectedItem!= null)
+            if (ClientAddBox.SelectedItem != null)
             {
                 var client = ClientAddBox.SelectedItem as Client;
                 foreach (var item in client.Discounts)
@@ -241,6 +273,20 @@ namespace PrintShop
 
             reportWindoow.Owner = this;
             reportWindoow.ShowDialog();
+        }
+
+        private void ServiceEditTab(object sender, SelectionChangedEventArgs e)
+        {
+            if (ServicesTab.IsSelected)
+            {
+                ServiceDataGrid.Visibility = Visibility.Collapsed;
+                ServiceInfoDataGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ServiceDataGrid.Visibility = Visibility.Visible;
+                ServiceInfoDataGrid.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

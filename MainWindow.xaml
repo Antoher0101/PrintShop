@@ -47,8 +47,26 @@
                     <DataGridTextColumn Header="Скидка" Binding="{Binding Discount.DiscountInfo.Percent}"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <DataGrid x:Name="ServiceInfoDataGrid"
+					  Margin="0 0 0 10"
+                      Grid.Row="0" Grid.ColumnSpan="2" 
+                      CanUserResizeRows="False" 
+                      CanUserDeleteRows="False" 
+                      CanUserAddRows="False" 
+					  IsReadOnly="True" 
+                      SelectionMode="Single"
+                      AutoGenerateColumns="False"
+                      Visibility="Collapsed">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Цена" Binding="{Binding Price}"/>
+                    <DataGridTextColumn Header="Формат" Binding="{Binding Format}"/>
+                    <DataGridTextColumn Header="Тип печати" Binding="{Binding Type}"/>
+                    <DataGridTextColumn Header="Тип бумаги" Binding="{Binding Paper}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
-        <TabControl x:Name="TabMenu" Grid.Row="1" Grid.Column="0">
+        <TabControl x:Name="TabMenu" Grid.Row="1" Grid.Column="0" SelectionChanged="ServiceEditTab">
             <TabControl.BitmapEffect>
                 <DropShadowBitmapEffect Color="LightGray" Direction="90" Noise="0" Softness="1" Opacity="0.5"/>
             </TabControl.BitmapEffect>
