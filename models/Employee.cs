@@ -22,7 +22,7 @@ namespace PrintShop.models
 
         public override string ToString()
         {
-            return $"{Id} - {Name} {LastName} {MiddleName}";
+            return $"{LastName} {Name} {MiddleName}";
         }
     }
 }

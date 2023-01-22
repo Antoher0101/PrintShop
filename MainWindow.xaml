@@ -5,8 +5,201 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PrintShop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="PrintShop" Height="588" Width="951">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="181*" MinWidth="276"/>
+            <ColumnDefinition Width="619*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="TopMenu" Panel.ZIndex="10" Grid.Column="0" Grid.ColumnSpan="2" 
+              ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+              UseLayoutRounding="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <MenuItem Header="Файл" Width="40">
+                <MenuItem Header="Создать"/>
+                <MenuItem Header="Открыть"/>
+                <MenuItem Header="Сохранить"/>
+                <MenuItem Header="Проверить подключение"/>
+                <Separator />
+                <MenuItem Header="Выход" Click="ExitProgram"/>
+            </MenuItem>
+            <MenuItem Header="Абоненты">
+                <MenuItem Header="Добавить"></MenuItem>
+                <MenuItem Header="Изменить"></MenuItem>
+                <MenuItem Header="Удалить"></MenuItem>
+                <Separator />
+                <MenuItem Header="Показать всю информацию"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Таблица">
+                <MenuItem Header="Обновить"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="?"></MenuItem>
+        </Menu>
+        <Grid Grid.Column="1" Grid.Row="1" Margin="10 10 10 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
+            <DataGrid x:Name="ServiceDataGrid"
+					  Margin="0 0 0 10"
+                      Grid.Row="0" Grid.ColumnSpan="2" 
+                      CanUserResizeRows="False" 
+                      CanUserDeleteRows="False" 
+                      CanUserAddRows="False" 
+					  IsReadOnly="True" 
+                      SelectionMode="Single"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Клиент" Binding="{Binding Client}"/>
+                    <DataGridTextColumn Header="Дата оказания услуги" Binding="{Binding Date}"/>
+                    <DataGridTextColumn Header="Сотрудник" Binding="{Binding Employee}"/>
+                    <DataGridTextColumn Header="Стоимость" Binding="{Binding TotalPriceWithDiscount}"/>
+                    <DataGridTextColumn Header="Скидка" Binding="{Binding Discount.DiscountInfo.Percent}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <TabControl x:Name="TabMenu" Grid.Row="1" Grid.Column="0">
+            <TabControl.BitmapEffect>
+                <DropShadowBitmapEffect Color="LightGray" Direction="90" Noise="0" Softness="1" Opacity="0.5"/>
+            </TabControl.BitmapEffect>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3" Cursor="Hand">Добавить заказ</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <!-- DB Write -->
+                <TabItem.Content>
+                    <Grid Grid.Column="0" Grid.Row="1" Margin="10">
+                        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10 5 0 5">
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Клиент" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="ClientAddBox" VerticalContentAlignment="Center" HorizontalAlignment="Right" 
+								          Style="{StaticResource ComboBox}" Width="130" SelectionChanged="ClientAddBox_SelectionChanged">
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Сотрудник" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="EmployeeAddBox" VerticalContentAlignment="Center" HorizontalAlignment="Right" 
+								          Style="{StaticResource ComboBox}" Width="130">
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Cкидка" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="DiscountAddBox" VerticalContentAlignment="Center" HorizontalAlignment="Right" 
+								          Style="{StaticResource ComboBox}" Width="130">
+                                </ComboBox>
+                            </DockPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="15">
+                            <!-- Add abonent button -->
+                            <Button Content="Добавить" Height="30" Width="100" HorizontalContentAlignment="Center"							        
+							        Cursor="Hand" IsDefault="True" Click="AddService"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3" Cursor="Hand">Новый клиент</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <Grid Grid.Column="0" Grid.Row="1" Margin="10">
 
+                        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10 5 0 5">
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Имя" VerticalAlignment="Center"/>
+                                <TextBox x:Name="NameAddBox" HorizontalAlignment="Right" VerticalContentAlignment="Center" 
+								         Style="{Binding Source={StaticResource TextBox}}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Фамилия" VerticalAlignment="Center"/>
+                                <TextBox x:Name="LastNameAddBox" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+								         Style="{Binding Source={StaticResource TextBox}}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Отчество" VerticalAlignment="Center"/>
+                                <TextBox x:Name="MiddleNameAddBox" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+								         Style="{Binding Source={StaticResource TextBox}}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Номер телефона" VerticalAlignment="Center"/>
+                                <TextBox x:Name="PhoneNumberAddBox" HorizontalAlignment="Right" VerticalContentAlignment="Center" 
+								                    Style="{StaticResource TextBox}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="15">
+                            <Button Content="Добавить" Height="30" Width="100" HorizontalContentAlignment="Center" Click="AddClient" 
+							        Cursor="Hand" IsDefault="True"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <!-- DB Search -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3" Cursor="Hand">Поиск</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <Grid Grid.Column="0" Grid.Row="1" Margin="10">
+                        
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <!-- Selected abonent -->
+            <TabItem x:Name="ServicesTab">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3" Cursor="Hand">Услуги</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <Grid Grid.Column="0" Grid.Row="1" Margin="10">
+                        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10 5 0 5">
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Название услуги" VerticalAlignment="Center"/>
+                                <TextBox x:Name="ServiceName" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+								         
+								         Style="{Binding Source={StaticResource TextBox}}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Цена" VerticalAlignment="Center"/>
+                                <TextBox x:Name="ServicePrice" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+								         
+								         Style="{Binding Source={StaticResource TextBox}}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Формат бумаги" VerticalAlignment="Center"/>
+                                <TextBox x:Name="ServiceFormat" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+								         
+								         Style="{Binding Source={StaticResource TextBox}}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Тип печати" VerticalAlignment="Center"/>
+                                <TextBox x:Name="ServiceType" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+								         
+								         Style="{Binding Source={StaticResource TextBox}}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 15">
+                                <TextBlock TextWrapping="WrapWithOverflow" Text="Тип бумаги" VerticalAlignment="Center"/>
+                                <TextBox x:Name="ServicePaper" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+								         
+								         Style="{Binding Source={StaticResource TextBox}}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="15">
+                            <Button Content="Добавить" Height="30" Width="100" HorizontalContentAlignment="Center" 
+							         IsDefault="True" Click="AddServiceInfo"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

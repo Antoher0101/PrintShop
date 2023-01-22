@@ -1,17 +1,12 @@
-﻿using System;
+﻿using PrintShop.models.Base;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PrintShop.models.Base;
 
 namespace PrintShop.models
 {
     [Table("TotalService")]
     public class TotalService : Entity
-    { 
+    {
         [ForeignKey("IdClient")]
         public virtual Client Client { get; set; }
 
@@ -26,5 +21,27 @@ namespace PrintShop.models
 
         [InverseProperty("TotalService")]
         public virtual List<Service> Services { get; set; }
+
+        public int IdDiscount { get; set; }
+
+        [ForeignKey("IdDiscount")]
+        public virtual Discount Discount { get; set; }
+
+        [NotMapped]
+        public double TotalPriceWithDiscount
+        {
+            get
+            {
+                double total = 0;
+                int percent = Discount.DiscountInfo.Percent;
+                foreach (Service s in Services)
+                    total += s.TotalPrice;
+                if (percent == 0) return total;
+                else
+                    return total * percent / 100;
+            }
+        }
+
+        public override string ToString() => this.Id.ToString();
     }
 }

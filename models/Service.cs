@@ -20,5 +20,8 @@ namespace PrintShop.models
         public virtual ServiceInfo ServiceInfo { get; set; }
 
         public int IdService { get; set; }
+
+        [NotMapped]
+        public double TotalPrice { get => Count * ServiceInfo.Price; }
     }
 }

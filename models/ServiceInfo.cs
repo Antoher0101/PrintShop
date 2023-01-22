@@ -18,5 +18,7 @@ namespace PrintShop.models
         public string Type { get; set; }
 
         public string Paper { get; set; }
+
+        public override string ToString() => $"{Name} {Format} - {Type}({Paper})";
     }
 }

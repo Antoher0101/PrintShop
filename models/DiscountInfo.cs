@@ -11,5 +11,6 @@ namespace PrintShop.models
 
         public string Name { get; set; }
 
+        public override string ToString() => $"({Name}) {Percent}%";
     }
 }

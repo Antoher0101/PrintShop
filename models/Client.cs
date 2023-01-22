@@ -25,6 +25,6 @@ namespace PrintShop.models
         [InverseProperty("Client")]
         public virtual List<TotalService> TotalServices { get; set; }
 
-        public override string ToString() => $"{Id} - {Name} {LastName} {MiddleName} {Phone}";
+        public override string ToString() => $"{LastName} {Name} {MiddleName}";
     }
 }
