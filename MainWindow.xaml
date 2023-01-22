@@ -22,8 +22,9 @@
                 <Separator />
                 <MenuItem Header="Выход" Click="ExitProgram"/>
             </MenuItem>
-            <MenuItem Header="Таблица">
+            <MenuItem Header="Отчеты">
                 <MenuItem Header="Сформировать отчет" Click="GenerateReport"></MenuItem>
+                <MenuItem Header="Результативность сотрудников" Click="EmployeeStat"></MenuItem>
             </MenuItem>
         </Menu>
         <Grid Grid.Column="1" Grid.Row="1" Margin="10 10 10 0">

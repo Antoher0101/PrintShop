@@ -20,6 +20,19 @@ namespace PrintShop.models
         [InverseProperty("Employee")]
         public virtual List<TotalService> TotalServices { get; set; }
 
+        public int CountService
+        {
+            get
+            {
+                int count = 0;
+                foreach (var service in TotalServices)
+                {
+                    count += service.Services.Count;
+                }
+                return count;
+            }
+        }
+
         public override string ToString()
         {
             return $"{LastName} {Name} {MiddleName}";

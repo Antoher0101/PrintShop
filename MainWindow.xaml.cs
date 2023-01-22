@@ -64,19 +64,29 @@ namespace PrintShop
 
         private void RefreshCollections()
         {
+            RefreshEmployees();
+            RefreshTotalServices();
+            RefreshDiscountInfos();
+            RefreshClientCollection();
+            RefreshServiceInfoCollection();
+        }
+
+        private void RefreshEmployees()
+        {
             Employees.Clear();
-            TotalServices.Clear();
             foreach (Employee item in employeeRepository.Items)
             {
                 Employees.Add(item);
             }
+        }
+
+        private void RefreshTotalServices()
+        {
+            TotalServices.Clear();
             foreach (TotalService item in totalServiceRepository.Items)
             {
                 TotalServices.Add(item);
             }
-            RefreshDiscountInfos();
-            RefreshClientCollection();
-            RefreshServiceInfoCollection();
         }
 
         private void RefreshDiscountInfos()
@@ -360,6 +370,12 @@ namespace PrintShop
             {
                 TotalServices.Add(item);
             }
+        }
+
+        private void EmployeeStat(object sender, RoutedEventArgs e)
+        {
+            Window employeeStat = new EmployeeStat(db);
+            employeeStat.ShowDialog();
         }
     }
 }
